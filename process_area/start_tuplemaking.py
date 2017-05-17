@@ -15,6 +15,12 @@ DAQFILE_DIR=os.path.join(PROCESS_AREA,'daqfile')
 LITEFILE_DIR=os.path.join(PROCESS_AREA,'tuplefile')
 TEMPFILE_PATH='/tmp/tupleout_%s.root' % str(os.getpid())
 RUNLIST_FILE='%s/runs.txt' % PROCESS_AREA
+
+def prep_dirs():
+    os.system('mkdir -p %s' % GARBAGE_DIR)
+    os.system('mkdir -p %s' % DAQFILE_DIR)
+    os.system('mkdir -p %s' % LITEFILE_DIR)
+
 def get_flist():
 
     garbage_flist=[x.rstrip('.ubdaq') for x in os.listdir(GARBAGE_DIR) if x.endswith('.ubdaq')]
@@ -79,5 +85,11 @@ if __name__=='__main__':
         sys.stderr.write('Could not find tuplemaker binary...\n')
         sys.stderr.write('\n')
         sys.exit(1)
+    if len(commands.getoutput('ps aux | grep %s' % sys.argv[0]).split('\n')) >=4:
+        print commands.getoutput('ps aux | grep %s' % sys.argv[0])
+        sys.stderr.write('%s already running...\n' % sys.argv[0])
+        sys.stderr.flush()
+        sys.exit(1)
+    prep_dirs()
     start()
     sys.exit(0)
