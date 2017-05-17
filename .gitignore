@@ -1,0 +1,7 @@
+*~
+development_daq
+process_area/daqfile
+process_area/garbagefile
+process_area/tuplefile
+process_area/*.txt
+
